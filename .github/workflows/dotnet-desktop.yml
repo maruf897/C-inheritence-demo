@@ -62,9 +62,9 @@ jobs:
         $session = New-PSSession -ComputerName $hostname -Credential $credentials -Authentication Basic -UseSSL
 
         # Run the script on the remote server
-        Invoke-Command -Session $session -ScriptBlock { 
-          C:\path\to\your\script.ps1 
-        }
+        # Invoke-Command -Session $session -ScriptBlock { 
+        #   C:\path\to\your\script.ps1 
+        # }
 
         # Close the session
         Remove-PSSession -Session $session
