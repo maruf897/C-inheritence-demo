@@ -6,6 +6,16 @@ on:
       - dev
       - master
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: publish
+        path: publish.tar.gz
   deploy:
     runs-on: windows-latest  # Use Windows runner
     steps:
