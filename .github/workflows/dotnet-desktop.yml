@@ -48,10 +48,10 @@ jobs:
     - name: Install PowerShell
       run: sudo apt-get install -y powershell
 
-    # - name: Install PSWSMan module
-    #   run: |
-    #     pwsh -Command 'Install-Module -Name PSWSMan' -Y
-    #     echo 'Y' | sudo pwsh -Command 'Install-WSMan'
+    - name: Install PSWSMan module
+      run: |
+        pwsh -Command 'Install-Module -Name PSWSMan' 
+        echo 'Y' | sudo pwsh -Command 'Install-WSMan'
 
 
 
