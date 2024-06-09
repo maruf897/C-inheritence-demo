@@ -52,9 +52,9 @@ jobs:
     - name: Run script on Windows EC2 instance
       shell: pwsh
       run: |
-        $username = ${{ env.EC2_USER }}
-        $password = ${{ env.EC2_PASSWORD }}
-        $hostname = ${{ env.EC2_HOST }}
+        $username = ${{ secrets.EC2_USER }}
+        $password = ${{ secrets.EC2_PASSWORD }}
+        $hostname = ${{ secrets.EC2_HOST }}
         
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
         $credentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
