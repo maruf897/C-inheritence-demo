@@ -51,7 +51,7 @@ jobs:
     - name: Install PSWSMan module
       run: |
         pwsh -Command 'Install-Module -Name PSWSMan '
-        echo 'y' | sudo pwsh -Command 'Install-WSMan'
+        echo 'Y' | sudo pwsh -Command 'Install-WSMan'
 
 
 
