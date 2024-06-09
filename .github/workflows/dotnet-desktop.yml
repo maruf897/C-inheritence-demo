@@ -48,7 +48,7 @@ jobs:
     - name: Remove existing PowerShell
       run: sudo apt-get remove -y powershell
 
-    - name: Install dependencies and PowerShell 7.1.5
+    - name: Install dependencies and PowerShell 7.1
       run: |
         sudo apt-get install -y wget apt-transport-https software-properties-common
         source /etc/os-release
@@ -56,8 +56,10 @@ jobs:
         sudo dpkg -i packages-microsoft-prod.deb
         rm packages-microsoft-prod.deb
         sudo apt-get update
-        sudo apt-get install -y powershell=7.1.5-1.ubuntu.$(lsb_release -rs)
-        sudo ln -s /usr/bin/pwsh /usr/bin/pwsh7.1
+        wget https://github.com/PowerShell/PowerShell/releases/download/v7.1.0/powershell-7.1.0-linux-x64.tar.gz
+        mkdir ~/powershell
+        tar -xvf powershell-7.1.0-linux-x64.tar.gz -C ~/powershell
+        sudo ln -s ~/powershell/pwsh /usr/bin/pwsh7.1
 
     - name: Install PSWSMan module
       run: |
