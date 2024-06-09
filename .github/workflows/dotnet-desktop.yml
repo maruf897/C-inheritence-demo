@@ -49,10 +49,11 @@ jobs:
       run: sudo apt-get install -y powershell
 
     - name: Install PSWSMan module
-      run: pwsh -Command 'Install-Module -Name PSWSMan '
+      run: |
+        pwsh -Command 'Install-Module -Name PSWSMan '
+        sudo pwsh -Command 'Install-WSMan'
 
-    - name: Install WSMan
-      run: sudo pwsh -Command 'Install-WSMan'
+
 
     - name: Debug environment variables
       run: |
