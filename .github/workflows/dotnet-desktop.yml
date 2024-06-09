@@ -38,6 +38,36 @@ jobs:
   #     with:
   #       name: publish
   #       path: publish.tar.gz
+  connect-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install PowerShell
+      run: sudo apt-get install -y powershell
+
+    - name: Run script on Windows EC2 instance
+      shell: pwsh
+      run: |
+        $username = ${{ secrets.WINDOWS_EC2_USER }}
+        $password = ${{ secrets.EC2_PASSWORD }}
+        $hostname = ${{ secrets.EC2_HOST }}
+
+        $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
+        $credentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
+        
+        # Create a PowerShell session to the remote server
+        $session = New-PSSession -ComputerName $hostname -Credential $credentials -Authentication Basic -UseSSL
+
+        # Run the script on the remote server
+        Invoke-Command -Session $session -ScriptBlock { 
+          C:\path\to\your\script.ps1 
+        }
+
+        # Close the session
+        Remove-PSSession -Session $session
 
   deploy:
     runs-on: ubuntu-latest
