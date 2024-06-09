@@ -45,8 +45,15 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install PowerShell
-      run: sudo apt-get install -y powershell 7.1
+    - name: Remove existing PowerShell
+      run: sudo apt-get remove -y powershell
+
+    - name: Install PowerShell 7.1
+      run: |
+        wget https://github.com/PowerShell/PowerShell/releases/download/v7.1.0/powershell-7.1.0-linux-x64.tar.gz
+        mkdir ~/powershell
+        tar -xvf powershell-7.1.0-linux-x64.tar.gz -C ~/powershell
+        sudo ln -s ~/powershell/pwsh /usr/bin/pwsh7.1
 
     - name: Install PSWSMan module
       run: |
