@@ -46,7 +46,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install PowerShell
-      run: sudo apt-get install -y powershell
+      run: sudo apt-get install -y powershell 7.1
 
     - name: Install PSWSMan module
       run: |
