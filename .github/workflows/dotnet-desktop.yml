@@ -55,7 +55,7 @@ jobs:
         $username = ${{ env.EC2_USER }}
         $password = ${{ env.EC2_PASSWORD }}
         $hostname = ${{ env.EC2_HOST }}
-
+        echo password
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
         $credentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
         
