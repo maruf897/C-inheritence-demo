@@ -6,25 +6,25 @@ on:
       - dev
       - master
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  # build:
+  #   runs-on: ubuntu-latest
 
-    steps:
+  #   steps:
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: publish
-        path: ${{github.workspace}}/publish.tar.gz
+  #   - name: Upload artifact
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: publish
+  #       path: ${{github.workspace}}/publish.tar.gz
   deploy:
     runs-on: windows-latest  # Use Windows runner
-    needs: build
+    # needs: build
 
     steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: publish
+    # - name: Download artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: publish
     
     - name: Checkout code
       uses: actions/checkout@v2
