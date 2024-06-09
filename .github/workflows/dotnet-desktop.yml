@@ -53,7 +53,7 @@ jobs:
       shell: pwsh
       run: |
         $username = ${{ secrets.EC2_USER }}
-        $password = ${{ secrets.EC2_PASSWORD }}
+        $password = "asdasdasd"
         $hostname = ${{ secrets.EC2_HOST }}
         
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
