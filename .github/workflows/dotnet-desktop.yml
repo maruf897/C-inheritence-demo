@@ -51,7 +51,7 @@ jobs:
     - name: Run script on Windows EC2 instance
       shell: pwsh
       run: |
-        $username = ${{ secrets.WINDOWS_EC2_USER }}
+        $username = ${{ secrets.EC2_USER }}
         $password = ${{ secrets.EC2_PASSWORD }}
         $hostname = ${{ secrets.EC2_HOST }}
 
@@ -68,6 +68,10 @@ jobs:
 
         # Close the session
         Remove-PSSession -Session $session
+    env:
+      EC2_USER: ${{ secrets.EC2_USERNAME }}
+      EC2_PASSWORD: ${{ secrets.EC2_PASSWORD }}
+      EC2_HOST: ${{ secrets.EC2_HOST }}
 
   deploy:
     runs-on: ubuntu-latest
