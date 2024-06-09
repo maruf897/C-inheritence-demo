@@ -18,7 +18,14 @@ jobs:
         path: publish.tar.gz
   deploy:
     runs-on: windows-latest  # Use Windows runner
+    needs: build
+
     steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: publish
+    
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Install dependencies
