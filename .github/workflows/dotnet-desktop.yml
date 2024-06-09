@@ -42,20 +42,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
     - name: Checkout repository
       uses: actions/checkout@v3
 
     - name: Install PowerShell
       run: sudo apt-get install -y powershell
 
+    - name: Install PSWSMan module
+      run: pwsh -Command 'Install-Module -Name PSWSMan -Force -Scope CurrentUser'
+
+    - name: Install WSMan
+      run: sudo pwsh -Command 'Install-WSMan'
+
+    - name: Debug environment variables
+      run: |
+        echo "WINDOWS_EC2_USERNAME: ${{ secrets.EC2_USER }}"
+        echo "WINDOWS_EC2_PASSWORD: ${{ secrets.EC2_PASSWORD }}"
+        echo "WINDOWS_EC2_HOSTNAME: ${{ secrets.EC2_HOST }}"
+      shell: bash
+
     - name: Run script on Windows EC2 instance
       shell: pwsh
+      env:
+        WINDOWS_EC2_USERNAME: ${{ secrets.EC2_USER }}
+        WINDOWS_EC2_PASSWORD: ${{ secrets.EC2_PASSWORD }}
+        WINDOWS_EC2_HOSTNAME: ${{ secrets.EC2_HOST }}
       run: |
-        $username = ${{ secrets.EC2_USER }}
-        $password = "asdasdasd"
-        $hostname = ${{ secrets.EC2_HOST }}
-        
+        $username = $env:WINDOWS_EC2_USERNAME
+        $password = $env:WINDOWS_EC2_PASSWORD
+        $hostname = $env:WINDOWS_EC2_HOSTNAME
+
+        if (-not $username) { throw "WINDOWS_EC2_USERNAME is null" }
+        if (-not $password) { throw "WINDOWS_EC2_PASSWORD is null" }
+        if (-not $hostname) { throw "WINDOWS_EC2_HOSTNAME is null" }
+
         $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
         $credentials = New-Object System.Management.Automation.PSCredential ($username, $securePassword)
         
@@ -69,11 +89,6 @@ jobs:
 
         # Close the session
         Remove-PSSession -Session $session
-      env:
-        EC2_USER: ${{ secrets.EC2_USERNAME }}
-        EC2_PASSWORD: ${{ secrets.EC2_PASSWORD }}
-        EC2_HOST: ${{ secrets.EC2_HOST }}
-
 
   deploy:
     runs-on: ubuntu-latest
