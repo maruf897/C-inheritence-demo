@@ -49,7 +49,7 @@ jobs:
       run: sudo apt-get install -y powershell
 
     - name: Install PSWSMan module
-      run: pwsh -Command 'Install-Module -Name PSWSMan -Force -Scope CurrentUser'
+      run: pwsh -Command 'Install-Module -Name PSWSMan '
 
     - name: Install WSMan
       run: sudo pwsh -Command 'Install-WSMan'
