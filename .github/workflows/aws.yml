@@ -32,7 +32,7 @@ jobs:
       run: tar -czvf publish.tar.gz -C ./publish .
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: publish
         path: publish.tar.gz
@@ -42,10 +42,10 @@ jobs:
 
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: publish
-        path: ./artifact
+        
     
     - name: Checkout code
       uses: actions/checkout@v2
@@ -78,7 +78,7 @@ jobs:
       run: |
       
         $session = New-PSSession -ComputerName ${{ secrets.EC2_HOST }} -Credential (New-Object PSCredential('${{ secrets.EC2_USER }}', (ConvertTo-SecureString '${{ secrets.EC2_PASSWORD }}' -AsPlainText -Force))) -Port ${{ secrets.EC2_PORT }} -UseSSL -SessionOption (New-PSSessionOption -SkipCACheck -SkipCNCheck)
-        Copy-Item "./artifact/publish.tar.gz" -Destination "C:\websites\${{ env.target_directory }}" -ToSession $session
+        Copy-Item "publish.tar.gz" -Destination "C:\websites\${{ env.target_directory }}" -ToSession $session
         Invoke-Command -Session $session -ScriptBlock {
           cd C:\websites\${{ env.target_directory }}
           
