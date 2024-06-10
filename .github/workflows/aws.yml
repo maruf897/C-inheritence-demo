@@ -32,7 +32,7 @@ jobs:
       run: tar -czvf publish.tar.gz -C ./publish .
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with:
         name: publish
         path: publish.tar.gz
@@ -42,7 +42,7 @@ jobs:
 
     steps:
     - name: Download artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v3
       with:
         name: publish
         path: ./artifact
