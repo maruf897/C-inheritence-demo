@@ -84,13 +84,13 @@ jobs:
 
           tar -xzvf publish.tar.gz
           # Remove-Item publish.tar.gz
-          Import-Module WebAdministration
-          if ((Get-WebSite -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") {
-            Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-green"
-          } else {
-            Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-blue"
-          }
-          Restart-WebAppPool -Name "zPax-Test-Portal"
+          # Import-Module WebAdministration
+          # if ((Get-WebSite -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") {
+          #   Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-green"
+          # } else {
+          #   Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-blue"
+          # }
+          # Restart-WebAppPool -Name "zPax-Test-Portal"
         }
         Remove-PSSession -Session $session
     - name: Complete job
