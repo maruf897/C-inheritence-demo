@@ -31,16 +31,19 @@ jobs:
     - name: Archive project files
       shell: pwsh
       run: |
-        tar -czvf publish.tar.gz -C ./publish .
+        Compress-Archive -Path ./publish -DestinationPath publish.zip
+        # tar -czvf publish.tar.gz -C ./publish .
         $session = New-PSSession -ComputerName ${{ secrets.EC2_HOST }} -Credential (New-Object PSCredential('${{ secrets.EC2_USER }}', (ConvertTo-SecureString '${{ secrets.EC2_PASSWORD }}' -AsPlainText -Force))) -Port ${{ secrets.EC2_PORT }} -UseSSL -SessionOption (New-PSSessionOption -SkipCACheck -SkipCNCheck)
-        Copy-Item "publish.tar.gz" -Destination "C:\websites\${{ env.target_directory }}" -ToSession $session
+        # Copy-Item "publish.tar.gz" -Destination "C:\websites\${{ env.target_directory }}" -ToSession $session
+        Copy-Item "publish.zip" -Destination "C:\websites\${{ env.target_directory }}" -ToSession $session
+
 
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
         name: publish
-        path: publish.tar.gz
+        path: publish.zip
   deploy:
     runs-on: windows-latest  # Use Windows runner
     needs: build
@@ -88,7 +91,8 @@ jobs:
           cd C:\websites\${{ env.target_directory }}
           
 
-          tar -xzvf publish.tar.gz
+          # tar -xzvf publish.tar.gz
+          Expand-Archive -Path publish.zip -DestinationPath .
           # Remove-Item publish.tar.gz
           Import-Module WebAdministration
           if ((Get-WebSite -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") {
