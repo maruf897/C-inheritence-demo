@@ -92,16 +92,12 @@ jobs:
           
 
           # tar -xzvf publish.tar.gz
-          Expand-Archive -Path publish.zip -DestinationPath .
+          Expand-Archive -Path publish.zip -DestinationPath . -Force
           # Remove-Item publish.tar.gz
-          Import-Module WebAdministration
-          if ((Get-WebSite -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") {
-            Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-green"
-          } else {
-            Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-blue"
-          }
-          Restart-WebAppPool -Name "zPax-Test-Portal"
-        }
-        Remove-PSSession -Session $session
+          try { if (-not (Get-Module -ListAvailable -Name WebAdministration)) { Install-WindowsFeature -name Web-Server -IncludeManagementTools } Import-Module WebAdministration -ErrorAction Stop 
+            if ((Get-Website -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") { Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-green" } 
+            else { Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-blue" } 
+            Restart-WebAppPool -Name "zPax-Test-Portal" } catch { Write-Error "Failed to import WebAdministration module or manage IIS: $_" } } 
+          Remove-PSSession -Session $session
     - name: Complete job
       run: echo "Deployment completed."
