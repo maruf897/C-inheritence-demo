@@ -7,7 +7,7 @@ on:
       - master
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -29,6 +29,7 @@ jobs:
       run: dotnet publish -c Release -o ./publish
 
     - name: Archive project files
+      shell: pwsh
       run: |
         tar -czvf publish.tar.gz -C ./publish .
         $session = New-PSSession -ComputerName ${{ secrets.EC2_HOST }} -Credential (New-Object PSCredential('${{ secrets.EC2_USER }}', (ConvertTo-SecureString '${{ secrets.EC2_PASSWORD }}' -AsPlainText -Force))) -Port ${{ secrets.EC2_PORT }} -UseSSL -SessionOption (New-PSSessionOption -SkipCACheck -SkipCNCheck)
