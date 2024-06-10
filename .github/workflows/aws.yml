@@ -53,10 +53,7 @@ jobs:
         choco install jq
     - name: Set WinRM Password
       run: echo "WINRM_PASSWORD=${{ secrets.EC2_PASSWORD }}" >> $GITHUB_ENV
-    - name: Print EC2_HOST
-      run: echo "EC2_HOST=${{ secrets.EC2_HOST }}"
-    - name: Print EC2_USER
-      run: echo "EC2_USER=${{ secrets.EC2_USER }}"
+    
     - name: Ensure directories exist and determine target directory
       id: determine-directory
       shell: pwsh
@@ -86,7 +83,7 @@ jobs:
           
 
           tar -xzvf publish.tar.gz
-          Remove-Item publish.tar.gz
+          # Remove-Item publish.tar.gz
           Import-Module WebAdministration
           if ((Get-WebSite -Name "zPax-Test-Portal").PhysicalPath -eq "C:\websites\zPax-Test-Portal-blue") {
             Set-ItemProperty "IIS:\Sites\zPax-Test-Portal" -name physicalPath -value "C:\websites\zPax-Test-Portal-green"
